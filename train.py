@@ -6,11 +6,13 @@ Features: each player's within-season RANK in PPG and team win percentage
 Split   : train on 1991-2012, test on 2013-2021 (past -> future)
 Model   : Logistic Regression (src/model.py)
 Metric  : season-level accuracy (src/evaluate.py)
+CV      : leave-one-season-out on the training seasons picks the features (src/cv.py)
 
 Usage: python train.py
 """
 import pandas as pd
 
+from src.cv import compare_feature_sets
 from src.data import load_data
 from src.evaluate import evaluate_all
 from src.features import FEATURES, add_features, add_label, split_by_time
@@ -24,6 +26,13 @@ def main():
 
     # 2. Split by time
     train, test = split_by_time(df)
+
+    # 2b. Feature selection evidence: leave-one-season-out CV on the TRAINING seasons only
+    cv_results = compare_feature_sets(train)
+    print(f"\nLeave-one-season-out CV on the {train['Year'].nunique()} training seasons "
+          "(how the features were chosen):")
+    for r in cv_results.values():
+        print(f"  {r['label']:<46} {r['hits']}/{r['n_seasons']} seasons ({r['accuracy']:.1%})")
 
     # 3. Train a simple model
     model = build_model()

@@ -7,6 +7,15 @@ TEST_START = 2013    # test on seasons >= 2013
 # Rank within each season (1 = best): an MVP is whoever stands out vs. that year's league.
 FEATURES = ["ppg_rank", "win_rank"]
 
+# Raw (non-ranked) alternative that CV compares against (see src/cv.py).
+RAW_FEATURES = ["PTS", "AST", "TRB", "STL", "BLK", "WIN_PCT"]
+
+# Candidate feature sets compared by leave-one-season-out CV on the training seasons.
+FEATURE_SETS = {
+    "rank_features": {"label": "Rank features (PPG rank + win-% rank)", "features": FEATURES},
+    "raw_stats": {"label": "Raw stats (PPG, AST, TRB, STL, BLK, win %)", "features": RAW_FEATURES},
+}
+
 
 def add_label(df: pd.DataFrame) -> pd.DataFrame:
     """mvp = 1 for the player with the highest MVP vote share each season, else 0."""
@@ -16,8 +25,9 @@ def add_label(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def add_features(df: pd.DataFrame) -> pd.DataFrame:
-    """Add each player's within-season rank in PPG and team win percentage."""
+    """Add each player's within-season rank in PPG and team win percentage (plus raw WIN_PCT)."""
     df = df.copy()
+    df["WIN_PCT"] = df["W/L%"]                      # raw team win percentage
     df["ppg_rank"] = df.groupby("Year")["PTS"].rank(ascending=False, method="min")
     df["win_rank"] = df.groupby("Year")["W/L%"].rank(ascending=False, method="min")
     return df
