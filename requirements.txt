@@ -1,5 +1,6 @@
-# Python 3.11+ (pandas 3 requires it). Results in README.md were produced with these exact versions.
-numpy==2.5.3
-pandas==3.0.5
-scikit-learn==1.9.1
-pytest==9.1.1
+# Python 3.9+. Compatible ranges; results in README.md verified with
+# numpy 2.5.3, pandas 3.0.5, scikit-learn 1.9.1 (Python 3.13).
+numpy>=1.24,<3
+pandas>=2.0,<4
+scikit-learn>=1.3,<2
+pytest>=7.0
