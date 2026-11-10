@@ -2,3 +2,6 @@ __pycache__/
 *.pyc
 .venv/
 .DS_Store
+
+# cached dataset (re-downloaded and hash-verified by src/data.py)
+data/
