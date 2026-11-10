@@ -1,0 +1,10 @@
+Year,actual_mvp,model_pick,model_correct,highest_ppg_pick,highest_ppg_correct,highest_eff_pick,highest_eff_correct
+2013,LeBron James,LeBron James,True,Carmelo Anthony,False,LeBron James,True
+2014,Kevin Durant,Kevin Durant,True,Kevin Durant,True,Kevin Durant,True
+2015,Stephen Curry,Stephen Curry,True,Russell Westbrook,False,Anthony Davis,False
+2016,Stephen Curry,Stephen Curry,True,Stephen Curry,True,Stephen Curry,True
+2017,Russell Westbrook,Stephen Curry,False,Russell Westbrook,True,Russell Westbrook,True
+2018,James Harden,James Harden,True,James Harden,True,Anthony Davis,False
+2019,Giannis Antetokounmpo,Giannis Antetokounmpo,True,James Harden,False,Giannis Antetokounmpo,True
+2020,Giannis Antetokounmpo,Giannis Antetokounmpo,True,James Harden,False,Giannis Antetokounmpo,True
+2021,Nikola Jokić,Donovan Mitchell,False,Stephen Curry,False,Nikola Jokić,True

@@ -1,0 +1,50 @@
+{
+  "train_seasons": "1991-2012",
+  "test_seasons": "2013-2021",
+  "test": {
+    "model": {
+      "label": "Model (logistic regression)",
+      "accuracy": 0.7778,
+      "hits": 7,
+      "n_seasons": 9
+    },
+    "highest_ppg": {
+      "label": "Baseline (highest PPG)",
+      "accuracy": 0.4444,
+      "hits": 4,
+      "n_seasons": 9
+    },
+    "highest_eff": {
+      "label": "Baseline (highest EFF)",
+      "accuracy": 0.7778,
+      "hits": 7,
+      "n_seasons": 9
+    }
+  },
+  "cv_leave_one_season_out": {
+    "rank_features": {
+      "label": "Rank features (PPG rank + win-% rank)",
+      "features": [
+        "ppg_rank",
+        "win_rank"
+      ],
+      "hits": 15,
+      "n_seasons": 22,
+      "accuracy": 0.6818
+    },
+    "raw_stats": {
+      "label": "Raw stats (PPG, AST, TRB, STL, BLK, win %)",
+      "features": [
+        "PTS",
+        "AST",
+        "TRB",
+        "STL",
+        "BLK",
+        "WIN_PCT"
+      ],
+      "hits": 13,
+      "n_seasons": 22,
+      "accuracy": 0.5909
+    }
+  }
+}

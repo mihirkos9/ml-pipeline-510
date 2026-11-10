@@ -10,6 +10,9 @@ CV      : leave-one-season-out on the training seasons picks the features (src/c
 
 Usage: python train.py
 """
+import json
+from pathlib import Path
+
 import pandas as pd
 
 from src.cv import compare_feature_sets
@@ -17,6 +20,28 @@ from src.data import load_data
 from src.evaluate import evaluate_all
 from src.features import FEATURES, add_features, add_label, split_by_time
 from src.model import build_model
+
+RESULTS_DIR = Path(__file__).resolve().parent / "results"
+
+
+def save_results(results, predictions, cv_results, train, test):
+    """Write results/metrics.json and results/test_predictions.csv (all methods, incl. baselines)."""
+    RESULTS_DIR.mkdir(exist_ok=True)
+    metrics = {
+        "train_seasons": f"{int(train['Year'].min())}-{int(train['Year'].max())}",
+        "test_seasons": f"{int(test['Year'].min())}-{int(test['Year'].max())}",
+        "test": {k: {**r, "accuracy": round(r["accuracy"], 4)} for k, r in results.items()},
+        "cv_leave_one_season_out": {
+            k: {"label": r["label"], "features": r["features"], "hits": r["hits"],
+                "n_seasons": r["n_seasons"], "accuracy": round(r["accuracy"], 4)}
+            for k, r in cv_results.items()},
+    }
+    with open(RESULTS_DIR / "metrics.json", "w") as f:
+        json.dump(metrics, f, indent=2)
+        f.write("\n")
+    first = ["Year", "actual_mvp"]
+    predictions[first + [c for c in predictions.columns if c not in first]].to_csv(
+        RESULTS_DIR / "test_predictions.csv", index=False)
 
 
 def main():
@@ -50,6 +75,11 @@ def main():
     for row in predictions.itertuples():
         status = "OK" if row.model_correct else "MISS"
         print(f"  {row.Year}: predicted {row.model_pick:<24} actual {row.actual_mvp:<24} {status}")
+
+    # 5. Save results for the README and for review
+    save_results(results, predictions, cv_results, train, test)
+    print(f"\nSaved results to {RESULTS_DIR.name}/metrics.json and "
+          f"{RESULTS_DIR.name}/test_predictions.csv")
 
 
 if __name__ == "__main__":
