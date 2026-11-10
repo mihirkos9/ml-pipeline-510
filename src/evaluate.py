@@ -9,11 +9,26 @@ the printout, metrics.json, and test_predictions.csv.
 """
 import pandas as pd
 
+
+def eff_per_game(d: pd.DataFrame) -> pd.Series:
+    """NBA 'EFF' efficiency per game: a simple, transparent stand-in for PER.
+
+    EFF = PTS + REB + AST + STL + BLK - missed FG - missed FT - TOV
+    (Real PER needs league pace and constants that aren't in this dataset.)
+    """
+    return (d["PTS"] + d["TRB"] + d["AST"] + d["STL"] + d["BLK"]
+            - (d["FGA"] - d["FG"]) - (d["FTA"] - d["FT"]) - d["TOV"])
+
+
 # key -> {"label": printed name, "score": function(test_df) -> Series (higher = better)}
 BASELINES = {
     "highest_ppg": {
         "label": "Baseline (highest PPG)",
         "score": lambda d: d["PTS"],
+    },
+    "highest_eff": {
+        "label": "Baseline (highest EFF)",
+        "score": eff_per_game,
     },
 }
 
