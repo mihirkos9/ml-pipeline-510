@@ -1,2 +1,5 @@
-pandas
-scikit-learn
+# Python 3.11+ (pandas 3 requires it). Results in README.md were produced with these exact versions.
+numpy==2.5.3
+pandas==3.0.5
+scikit-learn==1.9.1
+pytest==9.1.1
